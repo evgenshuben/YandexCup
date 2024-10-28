@@ -41,7 +41,6 @@ class Trainer:
         self.optimizer = instantiate(cfg.optimizer, params=self.model.parameters())
         self._init_data()
         self._init_losses()
-
         self._init_mlflow()
 
 
@@ -50,6 +49,7 @@ class Trainer:
         if self.cfg.pipeline.model_ckpt is not None:
             self.model.load_state_dict(torch.load(self.cfg.pipeline.model_ckpt), strict=False)
             logger.info(f'Model loaded from checkpoint: {self.cfg.pipeline.model_ckpt}')
+        self.model.to(self.device)
 
 
     def _init_data(self):
