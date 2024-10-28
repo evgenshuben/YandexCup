@@ -1,14 +1,14 @@
 transforms:
-  _target_: torchvision.transforms.v2.Compose
+  _target_: torchvision.transforms.Compose
   transforms:
   - _target_: scr.data.dataset.UnsqueezeTransform
-  - _target_: torchvision.transforms.v2.Resize
+  - _target_: torchvision.transforms.Resize
     interpolation: 3
     size:
     - 224
     - 224
   - _target_: scr.data.dataset.DuplicateChannels
-  - _target_: torchvision.transforms.v2.Normalize
+  - _target_: torchvision.transforms.Normalize
     mean:
     - 0.485
     - 0.456

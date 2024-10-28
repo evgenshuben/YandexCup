@@ -50,6 +50,7 @@ class Trainer:
         if self.cfg.pipeline.model_ckpt is not None:
             self.model.load_state_dict(torch.load(self.cfg.pipeline.model_ckpt), strict=False)
             logger.info(f'Model loaded from checkpoint: {self.cfg.pipeline.model_ckpt}')
+        self.model.to(self.device)
 
 
     def _init_data(self):
@@ -83,6 +84,7 @@ class Trainer:
         '''
         anchor = self.model.forward(batch["anchor"].to(self.device))
         anchor_label = batch["anchor_label"].to(self.device)
+
         if "positive" in batch:
             positive = self.model.forward(batch["positive"].to(self.device))
 

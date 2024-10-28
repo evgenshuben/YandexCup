@@ -14,9 +14,12 @@ train:
     _target_: torch.utils.data.DataLoader # in future todo different class with mixup cutmix
     dataset: ${dataset.train.dataset}
     batch_size: 200
-    num_workers: 0
+    num_workers: 10
     shuffle: True
     drop_last: True
+    prefetch_factor: 10
+    persistent_workers: true
+    pin_memory: true
 
 val:
   dataset:
