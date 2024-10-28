@@ -1,0 +1,54 @@
+dataset_class: scr.data.dataset.CoverDatasetPair # CoverDatasetClassifier or CoverDatasetPair
+
+train:
+  dataset:
+    _target_: ${dataset.dataset_class}
+    data_path: ${data_dir}
+    dataset_path: ${data_dir}/train
+    data_split: train
+    transforms: ${transforms.transforms}
+    file_ext: ${file_ext}
+    num_classes: ${num_classes}
+    augmentations: ${transforms.augmentations}
+  dataloader:
+    _target_: torch.utils.data.DataLoader # in future todo different class with mixup cutmix
+    dataset: ${dataset.train.dataset}
+    batch_size: 32
+    num_workers: 0
+    shuffle: True
+    drop_last: True
+
+val:
+  dataset:
+    _target_: ${dataset.dataset_class}
+    data_path: ${data_dir}
+    dataset_path: ${data_dir}/train
+    data_split: val
+    transforms: ${transforms.transforms}
+    file_ext: ${file_ext}
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    dataset: ${dataset.val.dataset}
+    batch_size: 50
+    num_workers: 0
+    shuffle: False
+    drop_last: False
+
+test:
+  dataset:
+    _target_: ${dataset.dataset_class}
+    data_path: ${data_dir}
+    dataset_path: ${data_dir}/test
+    data_split: test
+    transforms: ${transforms.transforms}
+    file_ext: ${file_ext}
+  dataloader:
+    _target_: torch.utils.data.DataLoader
+    dataset: ${dataset.test.dataset}
+    batch_size: 1
+    num_workers: 0
+    shuffle: False
+    drop_last: False
+
+
+

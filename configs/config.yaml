@@ -1,0 +1,47 @@
+experiment_number: 1 # unique experiment number
+data_dir: '/Users/evgenshuben/Desktop/gitReps/baseline/dataset'
+file_ext: "npy"
+num_classes: 39535
+
+
+hydra:
+  run:
+    dir: ./outputs_val/run-${experiment_number}/hydra
+
+mlflow:
+  uri: "http://127.0.0.1:8080"
+  experiment_name: "TestRun" # folder in mlflow
+  experiment_number: ${experiment_number}
+
+enviroment:
+  progress_bar: true
+  device: "cpu"
+  num_channels: 1
+
+
+pipeline:
+  model_ckpt: null # path to model if needs to checkpoint (in train or in test)
+  patience: 4
+  epochs: 1
+  progress_bar: true
+  log_steps: 10
+  save_val_outputs: true
+  output_dir: outputs_val/run-${experiment_number}/data # local path to dir wich will save logs and model ckpt's
+  test_output_dir: outputs_test # dir in with save submits for
+  save_model_path: models
+
+
+defaults:
+  - transforms/default  # default or image
+  - transforms/augmentations
+  - dataset/Classifier  # Classifier or MetricLearning
+  - losses/cross_entropy
+  - losses/triplet
+  - model/simple
+  - optimizer/adamW
+
+
+losses_weight:
+  cross_entropy: 1.0
+  triplet: 0.0
+

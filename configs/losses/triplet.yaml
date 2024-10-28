@@ -1,0 +1,12 @@
+triplet_loss:
+  _target_: pytorch_metric_learning.losses.TripletMarginLoss
+  margin: 0.2
+  distance:
+    _target_: pytorch_metric_learning.distances.CosineSimilarity
+
+triplet_mainer:
+  _target_: pytorch_metric_learning.miners.TripletMarginMiner
+  margin: 0.2
+  type_of_triplets: semihard
+  distance:
+    _target_: pytorch_metric_learning.distances.CosineSimilarity
