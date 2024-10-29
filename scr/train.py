@@ -92,7 +92,6 @@ class Trainer:
         l1 = torch.tensor(0.0, device=self.device)  # cross entropy
         l2 = torch.tensor(0.0, device=self.device)  # triplet loss
 
-
         # cross_entropy
         cross_entropy_weight = self.cfg.losses_weight.cross_entropy
         if cross_entropy_weight > 0:
