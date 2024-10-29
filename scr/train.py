@@ -215,7 +215,7 @@ class Trainer:
 
     def validation_step(self, batch):
         anchor_id = batch["anchor_id"]
-        features = self.model.forward(batch["anchor"].to(self.cfg.enviroment.device))
+        features = self.model.forward(batch["anchor"].to(self.device))
         return {
             "anchor_id": anchor_id.numpy(),
             "emb": features["emb"].squeeze(0).detach().cpu(),
