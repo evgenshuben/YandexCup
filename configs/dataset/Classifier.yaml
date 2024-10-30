@@ -13,7 +13,7 @@ train:
   dataloader:
     _target_: torch.utils.data.DataLoader # in future todo different class with mixup cutmix
     dataset: ${dataset.train.dataset}
-    batch_size: 64
+    batch_size: 32
     num_workers: 0
     shuffle: True
     drop_last: True
@@ -30,7 +30,7 @@ val:
   dataloader:
     _target_: torch.utils.data.DataLoader
     dataset: ${dataset.val.dataset}
-    batch_size: 50
+    batch_size: 32
     num_workers: 0
     shuffle: False
     drop_last: False

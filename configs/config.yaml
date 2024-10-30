@@ -1,6 +1,6 @@
 
 
-experiment_number: 3 # unique experiment number
+experiment_number: 4 # unique experiment number
   # folder in mlflow and in output
 
 data_dir: '/home/evgenshuben/Desktop/gitReps/YandexCup24/dataset'

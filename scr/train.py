@@ -250,7 +250,7 @@ class Trainer:
 
     def test_procedure(self) -> None:
         self.model.eval()
-        embeddings: Dict[str, torch.Tensor] = {}
+        # embeddings: Dict[str, torch.Tensor] = {}
         trackids: List[int] = []
         embeddings: List[np.array] = []
         for batch in tqdm(self.test_dataloader, disable=(not self.cfg.pipeline.progress_bar)):
