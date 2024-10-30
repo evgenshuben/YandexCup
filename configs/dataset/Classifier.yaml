@@ -13,10 +13,11 @@ train:
   dataloader:
     _target_: torch.utils.data.DataLoader # in future todo different class with mixup cutmix
     dataset: ${dataset.train.dataset}
-    batch_size: 200
+    batch_size: 64
     num_workers: 0
     shuffle: True
     drop_last: True
+    collate_fn: ${transforms.collate_fn}
 
 val:
   dataset:

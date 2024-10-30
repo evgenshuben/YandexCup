@@ -1,4 +1,4 @@
 _target_: scr.models.backbone.BackBone
-backbone_name: efficentnet_b0
+backbone_name: regnety_040.ra3_in1k
 emb_size: 512
 num_classes: ${num_classes}

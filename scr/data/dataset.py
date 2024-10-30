@@ -3,8 +3,31 @@ from typing import Dict, Literal, Tuple, Union, Any
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import DataLoader, Dataset
-from torchvision import models, transforms
+from torch.utils.data import Dataset, default_collate
+from torchvision import transforms
+
+from typing import List
+
+
+class AugmentationCollator:
+    def __init__(self, augmentations):
+        self.augmentations = augmentations
+
+    def __call__(self, batch):
+
+        anchor_ids = [item['anchor_id'] for item in batch]  # ID без изменений
+        anchors = torch.stack([item['anchor'] for item in batch])  # Тензор изображений
+        labels = torch.stack([item['anchor_label'] for item in batch])  # Тензор меток
+
+        augmented_anchors, augmented_labels = self.augmentations(anchors, labels.long())
+
+        return {
+            'anchor_id': anchor_ids,
+            'anchor': augmented_anchors,
+            'anchor_label': augmented_labels
+        }
+
+
 
 
 class UnsqueezeTransform:

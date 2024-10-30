@@ -1,5 +1,9 @@
-experiment_number: 1 # unique experiment number
-data_dir: '/Users/evgenshuben/Desktop/gitReps/baseline/dataset'
+
+
+experiment_number: 3 # unique experiment number
+  # folder in mlflow and in output
+
+data_dir: '/home/evgenshuben/Desktop/gitReps/YandexCup24/dataset'
 file_ext: "npy"
 num_classes: 39535
 
@@ -10,21 +14,21 @@ hydra:
 
 mlflow:
   uri: "http://127.0.0.1:8080"
-  experiment_name: "TestRun" # folder in mlflow
+  experiment_name: "PipelineBackBones" # folder in mlflow and in output
   experiment_number: ${experiment_number}
 
 enviroment:
   progress_bar: true
-  device: "cpu"
+  device: "cuda"
   num_channels: 1
 
 
 pipeline:
   model_ckpt: null # path to model if needs to checkpoint (in train or in test)
   patience: 4
-  epochs: 1
+  epochs: 20
   progress_bar: true
-  log_steps: 10
+  log_steps: 100
   save_val_outputs: true
   output_dir: outputs_val/run-${experiment_number}/data # local path to dir wich will save logs and model ckpt's
   test_output_dir: outputs_test # dir in with save submits for
@@ -32,12 +36,13 @@ pipeline:
 
 
 defaults:
-  - transforms/default  # default or image
+  - transforms/image  # default or image
   - transforms/augmentations
+  - transforms/dataloader_classifier_collator_mixup_cutmix # это только для изображений
   - dataset/Classifier  # Classifier or MetricLearning
   - losses/cross_entropy
   - losses/triplet
-  - model/simple
+  - model/backbone
   - optimizer/adamW
 
 

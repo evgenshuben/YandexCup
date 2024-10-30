@@ -94,8 +94,11 @@ class Trainer:
         # cross_entropy
         cross_entropy_weight = self.cfg.losses_weight.cross_entropy
         if cross_entropy_weight > 0:
-            labels = nn.functional.one_hot(anchor_label.long(), num_classes=self.cfg.num_classes)
-            l1 = cross_entropy_weight * self.cross_entropy_loss(anchor["cls"], labels.float().to(self.device))
+            if self.cfg.transforms.collate_fn is None:
+                labels = nn.functional.one_hot(anchor_label.long(), num_classes=self.cfg.num_classes)
+                l1 = cross_entropy_weight * self.cross_entropy_loss(anchor["cls"], labels.float().to(self.device))
+            else:
+                l1 = cross_entropy_weight * self.cross_entropy_loss(anchor["cls"], anchor_label.float().to(self.device))
 
         # triplet loss
         triplet_loss_weight = self.cfg.losses_weight.triplet
