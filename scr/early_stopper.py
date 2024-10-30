@@ -5,10 +5,10 @@ class EarlyStopper:
         self.patience = patience
         self.delta = delta
         self.counter = 0
-        self.score = -np.inf
+        self.max_score = -np.inf
 
     def __call__(self, score) -> bool:
-        if score > self.score:
+        if score > self.max_score:
             self.max_score = score
             self.counter = 0
         elif score <= (self.max_score - self.delta):
