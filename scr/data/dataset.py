@@ -5,8 +5,77 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset, default_collate
 from torchvision import transforms
+import torch.nn.functional as F
 
 from typing import List
+import numpy as np
+
+class MixUp1d:
+    def __init__(self, num_classes, alpha=1.0):
+        self.num_classes = num_classes
+        self.alpha = alpha
+
+    def __call__(self, x, y):
+        if self.alpha > 0:
+            lam = np.random.beta(self.alpha, self.alpha)
+        else:
+            lam = 1
+
+        batch_size = x.size(0)
+        index = torch.randperm(batch_size)
+
+        mixed_x = lam * x + (1 - lam) * x[index, :]
+
+        # Преобразование y в one-hot векторы
+        y_one_hot = torch.zeros(batch_size, self.num_classes, device=x.device)
+        y_one_hot[range(batch_size), y] = 1  # Преобразуем в one-hot
+
+        mixed_y = lam * y_one_hot + (1 - lam) * y_one_hot[index]
+
+        return mixed_x, mixed_y
+
+
+class CutMix1d:
+    def __init__(self, num_classes, alpha=1.0):
+        self.num_classes = num_classes
+        self.alpha = alpha
+
+    def __call__(self, x, y):
+        if self.alpha > 0:
+            lam = np.random.beta(self.alpha, self.alpha)
+        else:
+            lam = 1
+
+        batch_size = x.size(0)
+        index = torch.randperm(batch_size)
+
+        W = x.size(2)
+        H = x.size(1)
+
+        r_x = np.random.randint(0, W)
+        r_y = np.random.randint(0, H)
+        r_w = int(W * np.sqrt(1 - lam))
+        r_h = int(H * np.sqrt(1 - lam))
+
+        r_x1 = np.clip(r_x - r_w // 2, 0, W)
+        r_x2 = np.clip(r_x + r_w // 2, 0, W)
+        r_y1 = np.clip(r_y - r_h // 2, 0, H)
+        r_y2 = np.clip(r_y + r_h // 2, 0, H)
+
+        # Создаем смешанные данные
+        x[:, r_y1:r_y2, r_x1:r_x2] = x[index, r_y1:r_y2, r_x1:r_x2]
+
+        # Преобразование y в one-hot векторы
+        y_one_hot = torch.zeros(batch_size, self.num_classes, device=x.device)
+        y_one_hot[range(batch_size), y] = 1  # Преобразуем в one-hot
+
+        # Смешиваем метки
+        y_a = y_one_hot
+        y_b = y_one_hot[index]
+        mixed_y = lam * y_a + (1 - lam) * y_b
+
+        return x, mixed_y
+
 
 
 class AugmentationCollator:
@@ -28,6 +97,34 @@ class AugmentationCollator:
         }
 
 
+class ResizeSpectrogram:
+
+    def __init__(self, target_size=(80, 50)):
+        self.target_size = tuple(target_size)
+
+    def __call__(self, tensor):
+        tensor = tensor.unsqueeze(0)  # Добавляем размерность: (1, 84, 50)
+        resized_tensor = F.interpolate(
+            tensor.unsqueeze(0),
+            size=(self.target_size[0],
+            tensor.shape[2]),
+            mode='bicubic',
+            align_corners=False
+        )
+
+        return resized_tensor.squeeze(0).squeeze(0)
+
+class InterpolateTransform:
+    """
+    Это нужно для приведения к виду мелл спектрограммы
+    """
+    def __init__(self, target_size=(96, 64)):
+        self.target_size = tuple(target_size)
+
+    def __call__(self, tensor):
+        tensor = tensor.unsqueeze(0)  # Размер (1, H, W)
+        tensor = F.interpolate(tensor.unsqueeze(0), size=self.target_size, mode='bicubic', align_corners=False)
+        return tensor.squeeze(0)  #
 
 
 class UnsqueezeTransform:
@@ -39,6 +136,8 @@ class DuplicateChannels:
     """Пользовательская трансформация для дублирования каналов."""
     def __call__(self, tensor):
         return tensor.repeat(3, 1, 1)  # Дублируем канал до 3 (3, 224, 224)
+
+
 
 class CoverDatasetBase(Dataset):
     def __init__(

@@ -10,6 +10,7 @@ from tqdm import tqdm, trange
 from typing import Dict, List
 import numpy as np
 from sklearn.metrics import pairwise_distances_chunked
+import pandas as pd
 
 from scr.early_stopper import EarlyStopper
 from scr.utils import (
@@ -269,6 +270,27 @@ class Trainer:
         save_test_predictions(
             predictions, output_dir=self.cfg.pipeline.test_output_dir, experiment_number=self.experiment_number
         )
+
+    def test_embeddings(self) -> None:
+        self.model.eval()
+        # embeddings: Dict[str, torch.Tensor] = {}
+        trackids: List[int] = []
+        embeddings: List[np.array] = []
+        for batch in tqdm(self.test_dataloader, disable=(not self.cfg.pipeline.progress_bar)):
+            test_dict = self.validation_step(batch)
+            if test_dict["emb"].ndim == 1:
+                test_dict["emb"] = test_dict["emb"].unsqueeze(0)
+            for anchor_id, embedding in zip(test_dict["anchor_id"], test_dict["emb"]):
+                trackids.append(anchor_id)
+                embeddings.append(embedding.numpy())
+        embeddings_df = pd.DataFrame({
+            'trackids': trackids,
+            'embedding': embeddings
+        }).set_index('trackids')
+
+        embeddings_path = os.path.join(self.cfg.pipeline.output_dir, 'test_embeddings.pq')
+        embeddings_df.to_parquet(embeddings_path, engine="pyarrow")
+
 
     def test(self) -> None:
         self.test_results: TestResults = {}

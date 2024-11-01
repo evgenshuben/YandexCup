@@ -1,0 +1,5 @@
+transforms:
+  _target_: torchvision.transforms.v2.Compose
+  transforms:
+  - _target_: scr.data.dataset.ResizeSpectrogram
+    target_size: [80, 50]

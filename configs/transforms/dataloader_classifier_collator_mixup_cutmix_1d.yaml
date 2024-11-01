@@ -1,0 +1,14 @@
+collate_fn:
+  _target_: scr.data.dataset.AugmentationCollator
+  augmentations:
+    _target_: torchvision.transforms.v2.RandomChoice
+    transforms:
+    - _target_: scr.data.dataset.MixUp1d
+      num_classes: ${num_classes}
+      alpha: 1.0
+    - _target_: scr.data.dataset.CutMix1d
+      num_classes: ${num_classes}
+      alpha: 1.0
+    p:
+    - 0.5
+    - 0.5

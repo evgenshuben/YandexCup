@@ -1,0 +1,4 @@
+_target_: scr.models.audioconformer.AudioConformer
+pretrained_model_name: stt_en_conformer_ctc_large
+emb_size: 512
+num_classes: ${num_classes}

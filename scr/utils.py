@@ -23,8 +23,7 @@ class Postfix(TypedDict):
     mr1: float
     mAP: float
 
-def reduce_func(D_chunk, start):
-    top_size = 100
+def reduce_func(D_chunk, start, top_size=100):
     nearest_items = np.argsort(D_chunk, axis=1)[:, :top_size + 1]
     return [(i, items[items!=i]) for i, items in enumerate(nearest_items, start)]
 

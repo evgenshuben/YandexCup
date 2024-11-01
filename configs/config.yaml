@@ -1,12 +1,10 @@
 
 
-experiment_number: 4 # unique experiment number
-  # folder in mlflow and in output
+experiment_number: 11 # unique experiment number
 
 data_dir: '/home/evgenshuben/Desktop/gitReps/YandexCup24/dataset'
 file_ext: "npy"
 num_classes: 39535
-
 
 hydra:
   run:
@@ -14,19 +12,18 @@ hydra:
 
 mlflow:
   uri: "http://127.0.0.1:8080"
-  experiment_name: "PipelineBackBones" # folder in mlflow and in output
+  experiment_name: "PipelineBackBones" # folder in mlflow and in output PipelineBackBones - for backbones
   experiment_number: ${experiment_number}
 
 enviroment:
   progress_bar: true
-  device: "cuda"
+  device: cuda # cuda or cpu
   num_channels: 1
-
 
 pipeline:
   model_ckpt: null # path to model if needs to checkpoint (in train or in test)
   patience: 4
-  epochs: 20
+  epochs: 40
   progress_bar: true
   log_steps: 100
   save_val_outputs: true
@@ -35,16 +32,38 @@ pipeline:
   save_model_path: models
 
 
+#defaults:
+#  - transforms/default  # default or image or spectrogramm
+#  - transforms/augmentations
+#  - transforms/dataloader_classifier_collator_mixup_cutmix_1d # это только для изображений  dataloader_classifier_collator_mixup_cutmix
+#  - dataset/Classifier  # Classifier or MetricLearning
+#  - losses/cross_entropy
+#  - losses/triplet
+#  - model/backboneResize # conformer backbone backboneResize
+#  - optimizer/adamW
+
+# backbone from zero learning
+#defaults:
+#  - transforms/image  # default or image or spectrogramm
+#  - transforms/augmentations
+#  - transforms/dataloader_classifier_collator_mixup_cutmix # это только для изображений  dataloader_classifier_collator_mixup_cutmix
+#  - dataset/Classifier  # Classifier or MetricLearning
+#  - losses/cross_entropy
+#  - losses/triplet
+#  - model/backbone # conformer backbone backboneResize
+#  - optimizer/adamW
+
+
+# backbone finetune triplet loss
 defaults:
-  - transforms/image  # default or image
+  - transforms/image  # default or image or spectrogramm
   - transforms/augmentations
-  - transforms/dataloader_classifier_collator_mixup_cutmix # это только для изображений
-  - dataset/Classifier  # Classifier or MetricLearning
+  - transforms/dataloader_collator_default # это только для изображений  dataloader_classifier_collator_mixup_cutmix
+  - dataset/MetricLearning  # Classifier or MetricLearning
   - losses/cross_entropy
   - losses/triplet
-  - model/backbone
+  - model/backbone # conformer backbone backboneResize
   - optimizer/adamW
-
 
 losses_weight:
   cross_entropy: 1.0

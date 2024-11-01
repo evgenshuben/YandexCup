@@ -1,0 +1,4 @@
+_target_: scr.models.audio_models.VGGishModel
+emb_size: 512
+num_classes: ${num_classes}
+postprocess: false
