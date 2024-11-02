@@ -43,27 +43,27 @@ pipeline:
 #  - optimizer/adamW
 
 # backbone from zero learning
-#defaults:
-#  - transforms/image  # default or image or spectrogramm
-#  - transforms/augmentations
-#  - transforms/dataloader_classifier_collator_mixup_cutmix # это только для изображений  dataloader_classifier_collator_mixup_cutmix
-#  - dataset/Classifier  # Classifier or MetricLearning
-#  - losses/cross_entropy
-#  - losses/triplet
-#  - model/backbone # conformer backbone backboneResize
-#  - optimizer/adamW
-
-
-# backbone finetune triplet loss
 defaults:
   - transforms/image  # default or image or spectrogramm
   - transforms/augmentations
-  - transforms/dataloader_collator_default # это только для изображений  dataloader_classifier_collator_mixup_cutmix
-  - dataset/MetricLearning  # Classifier or MetricLearning
+  - transforms/dataloader_classifier_collator_mixup_cutmix # это только для изображений  dataloader_classifier_collator_mixup_cutmix
+  - dataset/Classifier  # Classifier or MetricLearning
   - losses/cross_entropy
   - losses/triplet
   - model/backbone # conformer backbone backboneResize
   - optimizer/adamW
+
+
+# backbone finetune triplet loss
+#defaults:
+#  - transforms/image  # default or image or spectrogramm
+#  - transforms/augmentations
+#  - transforms/dataloader_collator_default # это только для изображений  dataloader_classifier_collator_mixup_cutmix
+#  - dataset/MetricLearning  # Classifier or MetricLearning
+#  - losses/cross_entropy
+#  - losses/triplet
+#  - model/backbone # conformer backbone backboneResize
+#  - optimizer/adamW
 
 losses_weight:
   cross_entropy: 1.0
