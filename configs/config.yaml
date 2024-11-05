@@ -23,7 +23,7 @@ enviroment:
 pipeline:
   model_ckpt: null # path to model if needs to checkpoint (in train or in test)
   patience: 4
-  epochs: 40
+  epochs: 20
   progress_bar: true
   log_steps: 100
   save_val_outputs: true
@@ -41,6 +41,7 @@ pipeline:
 #  - losses/triplet
 #  - model/backboneResize # conformer backbone backboneResize
 #  - optimizer/adamW
+
 
 # backbone from zero learning
 defaults:

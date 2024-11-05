@@ -33,15 +33,26 @@
 
 
 
-python3.10 main.py model.backbone_name='rexnetr_300.sw_in12k_ft_in1k'  experiment_number=19
-python3.10 main.py model.backbone_name='efficientnet_b5.sw_in12k_ft_in1k'  experiment_number=20
-python3.10 main.py model.backbone_name='hgnetv2_b5.ssld_stage2_ft_in1k'  experiment_number=21
-python3.10 main.py model.backbone_name='tf_efficientnet_b6.ns_jft_in1k'  experiment_number=22
-python3.10 main.py model.backbone_name='regnetz_d8_evos.ch_in1k'  experiment_number=23 # тяжелая модель, ее в конец
+#python3.10 main.py model.backbone_name='rexnetr_300.sw_in12k_ft_in1k'  experiment_number=19
+#python3.10 main.py model.backbone_name='efficientnet_b5.sw_in12k_ft_in1k'  experiment_number=20
+#python3.10 main.py model.backbone_name='hgnetv2_b5.ssld_stage2_ft_in1k'  experiment_number=21
+#python3.10 main.py model.backbone_name='tf_efficientnet_b6.ns_jft_in1k'  experiment_number=22
+#python3.10 main.py model.backbone_name='regnetz_d8_evos.ch_in1k'  experiment_number=23 # тяжелая модель, ее в конец
 
 
 
 
+
+
+# fintune 19, 20 exp
+#python3.10 main.py model.backbone_name='rexnetr_300.sw_in12k_ft_in1k' experiment_number=21 losses_weight.triplet=1.0 optimizer.lr=0.00001 pipeline.model_ckpt='/home/evgenshuben/Desktop/gitReps/YandexCup/outputs_val/run-19/data/model/best-model-epoch\=38-max_secs\=50.pt' pipeline.epochs=1
+#python3.10 main.py model.backbone_name='efficientnet_b5.sw_in12k_ft_in1k' experiment_number=22 losses_weight.triplet=1.0 optimizer.lr=0.00001 pipeline.model_ckpt='/home/evgenshuben/Desktop/gitReps/YandexCup/outputs_val/run-20/data/model/best-model-epoch\=31-max_secs\=50.pt' pipeline.epochs=1
+
+
+
+python3.10 main.py model.backbone_name='hgnetv2_b5.ssld_stage2_ft_in1k'  experiment_number=23
+python3.10 main.py model.backbone_name='tf_efficientnet_b6.ns_jft_in1k'  experiment_number=24
+python3.10 main.py model.backbone_name='regnetz_d8_evos.ch_in1k'  experiment_number=25 # тяжелая модель, ее в конец
 
 
 # rexnetr_300.sw_in12k_ft_in1k
