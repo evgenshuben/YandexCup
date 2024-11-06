@@ -47,6 +47,14 @@ python3.10 main.py model.backbone_name='efficientnet_b5.sw_in12k_ft_in1k' experi
 
 
 
+# Скоринг соло модели
+
+Чтобы сделать файлик с тестом, нужно запустить ноутбук [Hydra load config.ipynb](notebooks/Hydra%20load%20config.ipynb), указав только путь с конфигом (в конфиг нужно еще вручную прокинуть чекпоинт)
+```yaml
+pipeline:
+  model_ckpt: null
+```
+
 
 # Запуск ансамбля
 
