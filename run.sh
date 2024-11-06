@@ -50,11 +50,11 @@
 
 
 
-python3.10 main.py model.backbone_name='hgnetv2_b5.ssld_stage2_ft_in1k'  experiment_number=23
-python3.10 main.py model.backbone_name='tf_efficientnet_b6.ns_jft_in1k'  experiment_number=24
-python3.10 main.py model.backbone_name='regnetz_d8_evos.ch_in1k'  experiment_number=25 # тяжелая модель, ее в конец
+#python3.10 main.py model.backbone_name='hgnetv2_b5.ssld_stage2_ft_in1k'  experiment_number=23
+#python3.10 main.py model.backbone_name='tf_efficientnet_b6.ns_jft_in1k'  experiment_number=24
+#python3.10 main.py model.backbone_name='regnetz_d8_evos.ch_in1k'  experiment_number=25 # тяжелая модель, ее в конец
 
-
+  
 # rexnetr_300.sw_in12k_ft_in1k
 # efficientnet_b5.sw_in12k_ft_in1k
 # hgnetv2_b5.ssld_stage2_ft_in1k
